@@ -4,7 +4,7 @@ A console program for parsing a RSS and checking its last build date.
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. For simplification purposes, serveral assumptions are made during creating the program:
-1. The input will be in a CSV file and each line contains a company name and its RSS Feed url delimited by a comma. 
+1. The input will be in a CSV file name "companyRss.txt" and each line contains a company name and its RSS Feed url delimited by a comma. 
 2. The ```<lastBuildDate>``` element in the XML file is used to check the last activity after the pull request (HTTP GET). This element is optional in the XML file. Another solution is that, checking the ```<pubDate>``` element for each ```<item>``` element and the latest pub date will be the last activity date.     
 
 This program is created in Visual Studio 2017 and the target framework is .NET Core 2.1. The configuration for given inactive days can be set in the "appsettings.json" file.
