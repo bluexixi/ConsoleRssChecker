@@ -1,0 +1,7 @@
+﻿CNN,http://rss.cnn.com/rss/cnn_topstories.rss
+BBC,http://feeds.bbci.co.uk/news/world/rss.xml
+Reuters,http://feeds.reuters.com/Reuters/worldNews
+Yahoo,http://news.yahoo.com/rss/
+TechCrunch,https://techcrunch.com/rssfeeds/
+Fandango,https://www.fandango.com/rss/newmovies.rss
+Sports Illustrated,http://www.si.com/rss/si_topstories.rss
