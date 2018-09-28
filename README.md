@@ -1,25 +1,14 @@
-## ConsoleRssChecker
-A console program for parsing a RSS checking its last build date..
+# ConsoleRssChecker
+A console program for parsing a RSS and checking its last build date.
 
-Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+## Getting Started
 
-Prerequisites
-What things you need to install the software and how to install them
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. For simplification purposes, serveral assumptions are made during creating the program:
+1. The input will be in a CSV file and each line contains a company name and its RSS Feed url delimited by a comma. 
+2. The ```<lastBuildDate>``` element in the XML file is used to check the last activity after the pull request (HTTP GET). This element is optional in the XML file. Another solution is that, checking the ```<pubDate>``` element for each ```<item>``` element and the latest pub date will be the last activity date.     
 
-Give examples
-Installing
-A step by step series of examples that tell you how to get a development env running
+This program is created in Visual Studio 2017 and the target framework is .NET CORE 2.1. The configuration for given inactive days can be set in the "appsettings.json" file.
 
-Say what the step will be
-
-Give the example
-And repeat
-
-until finished
-End with an example of getting some data out of the system or using it for a little demo
-
-Running the tests
-
+Unit tests have been created for the Service module and can be run in the Test Explorer in Visual Studio.
 
 
