@@ -1,11 +1,10 @@
 ﻿namespace ConsoleRssChecker.Repository
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface ICompanyRssRepository
+    public interface IInactiveCompanyRepository
     {
-        Task<IEnumerable<Tuple<string, string>>> GetAllCompanyRss();
+        Task Save(IEnumerable<string> inactiveCompanyList);
     }
 }

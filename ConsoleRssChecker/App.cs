@@ -23,6 +23,7 @@
         {
             _logger.LogInformation($"Checking for inactive companies for {_config.InactiveDays} day(s).");
             _rssChecker.Run();
+            _logger.LogInformation($"Finished. Check the Outputs folder for results.");
             Console.ReadKey();
         }
     }

@@ -43,7 +43,8 @@
             // add services
             serviceCollection.AddTransient<IRssChecker, RssChecker>();
             serviceCollection.AddTransient<IRssParser, RssParser>();
-            serviceCollection.AddTransient<ICompanyRssRepository, CsvCompanyRssRepository>();
+            serviceCollection.AddSingleton<ICompanyRssRepository, CsvCompanyRssRepository>();
+            serviceCollection.AddSingleton<IInactiveCompanyRepository, TextFileInactiveCompanyRepository>();
 
             // add app
             serviceCollection.AddTransient<App>();

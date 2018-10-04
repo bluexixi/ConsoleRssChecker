@@ -1,9 +1,10 @@
 ﻿namespace ConsoleRssChecker.Utility
 {
     using System;
+    using System.Threading.Tasks;
 
     public interface IRssParser
     {
-        DateTime GetLastBuildDate(string url);
+        Task<DateTime> GetLastBuildDate(string url);
     }
 }

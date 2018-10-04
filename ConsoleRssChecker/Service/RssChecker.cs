@@ -16,29 +16,31 @@
         private readonly AppSettings _config;
         private readonly IRssParser _rssParser;
         private readonly ICompanyRssRepository _companyRssRepository;
+        private readonly IInactiveCompanyRepository _inactiveCompanyRepository;
 
         public RssChecker(ILogger<RssChecker> logger, 
                           IOptions<AppSettings> config,
                           IRssParser rssParser,
-                          ICompanyRssRepository companyRssRepository)
+                          ICompanyRssRepository companyRssRepository,
+                          IInactiveCompanyRepository inactiveCompanyRepository)
         {
             _logger = logger;
             _config = config.Value;
             _rssParser = rssParser;
             _companyRssRepository = companyRssRepository;
+            _inactiveCompanyRepository = inactiveCompanyRepository;
         }
 
-
-        public IEnumerable<string> CreateInactiveCompanyList()
+        public async Task<IEnumerable<string>> CreateInactiveCompanyList()
         {
-            var companyRssTuples = _companyRssRepository.GetAllCompanyRss();
+            var companyRssTuples = await _companyRssRepository.GetAllCompanyRss();
             // Thread-safe, only Add method is used.
             var inactiveCompanyList = new List<string>();
 
-            Parallel.ForEach(companyRssTuples, companyRssTuple =>
+            Parallel.ForEach(companyRssTuples, async companyRssTuple =>
             {
                 var rssUri = companyRssTuple.Item2;
-                var date = _rssParser.GetLastBuildDate(rssUri);
+                var date = await _rssParser.GetLastBuildDate(rssUri);
                 if (date.Equals(DateTime.MinValue)) return;
 
                 var days = (DateTime.Now - date).TotalDays;
@@ -50,20 +52,9 @@
 
         public void Run()
         {
-            var inactiveCompanyList = CreateInactiveCompanyList();
+            var inactiveCompanyList = CreateInactiveCompanyList().Result;
 
-            if (inactiveCompanyList.Count() > 0)
-            {
-                Console.WriteLine($"The following companies have been inactive for {_config.InactiveDays} days:");
-                foreach (var name in inactiveCompanyList)
-                {
-                    Console.WriteLine($"{name}");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"No company has been inactive for {_config.InactiveDays} days.");
-            }
+            _inactiveCompanyRepository.Save(inactiveCompanyList);
         }
     }
 }

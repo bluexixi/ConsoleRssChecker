@@ -6,6 +6,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Threading.Tasks;
 
     public class CsvCompanyRssRepository : ICompanyRssRepository
     {
@@ -28,34 +29,36 @@
             }
         }
 
-        public IEnumerable<Tuple<string, string>> GetAllCompanyRss()
+        public async Task<IEnumerable<Tuple<string, string>>> GetAllCompanyRss()
         {
-            var companyRssTuples = new List<Tuple<string, string>>();
+            return await Task.Run(() => {
+                var companyRssTuples = new List<Tuple<string, string>>();
 
-            if (!File.Exists(_filepath))
-            {
-                _logger.LogError($"The file at location: {_filepath} does not exist.");
-                return companyRssTuples;
-            }
-
-            try
-            {
-                using (var sr = new StreamReader(_filepath))
+                if (!File.Exists(_filepath))
                 {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
+                    _logger.LogError($"The file at location: {_filepath} does not exist.");
+                    return companyRssTuples;
+                }
+
+                try
+                {
+                    using (var sr = new StreamReader(_filepath))
                     {
-                        var elems = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
-                        var tuple = new Tuple<string, string>(elems[0], elems[1]);
-                        companyRssTuples.Add(tuple);
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            var elems = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                            var tuple = new Tuple<string, string>(elems[0], elems[1]);
+                            companyRssTuples.Add(tuple);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"The file at location: {_filepath} can not be read with an error message {ex.Message}.");
-            }
-            return companyRssTuples;
+                catch (Exception ex)
+                {
+                    _logger.LogError($"The file at location: {_filepath} can not be read with an error message {ex.Message}.");
+                }
+                return companyRssTuples;
+            });
         }
     }
 }
